@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>读者评论页面</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript" src="/bootstrap/js/jquery-1.10.1.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/javascripts/xheditor/jquery/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="/javascripts/xheditor/xheditor-1.2.2.min.js"></script>
+	<script type="text/javascript" src="/javascripts/xheditor/xheditor_lang/zh-cn.js"></script>
+</head>
+<body>
+        <%- include("header")%>
+        <div class="detail">
+            <div class="bookTop">
+                <div class="bookDetail">
+                    <div class="bookD">
+                            <img src="https://img1.doubanio.com/lpic/s4679829.jpg" alt="">
+                            <div class="bookDetailR">
+                                <h2><%- book.title%></h2>
+                                <ul>
+                                    <li>图书名称：<%- book.title%></li>
+                                    <li>著译者：<%- book.author[0]%></li>
+                                    <li>出版社：<%- book.publisher%></li>
+                                    <li>图书价格：<%- book.price%></li>
+                                    <li>索书号：<%- book.isbn10%></li>
+                                    <li>出版时间：<%- book.pubdate%></li>
+                                </ul>
+                            </div>
+                    </div>
+                    <div class="contentIntro content">
+                        <h3>内容简介......</h3>
+                        <p style="text-indent:2em;line-height:30px;font-size:12px;margin-top:5px;">
+                            <%- book.summary%>
+                        </p>
+                    </div>
+                    <div class="authorIntro content">
+                            <h3>作者简介......</h3>
+                            <p style="text-indent:2em;line-height:30px;font-size:12px;margin-top:5px;">
+                                <%- book.author_intro %>
+                            </p>
+                        </div>
+                </div>
+            </div>
+            <div class="bookComment">
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">说点什么好呢？</button>
+                <div class="top">
+                    <h2>短评......</h2>
+                </div>
+                <ul>
+                    <li>
+                        <p><em><%- readerinfo.username%></em>看过<time><%- readerinfo.date%></time></p>
+                        <p>123</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- <script type="text/javascript">
+            $(pageInit);
+    
+            //  comment.ejs  /comment/index
+            function pageInit(){
+                $.extend(XHEDITOR.settings,{shortcuts:{"ctrl+enter":submitForm}});
+                $("#content").xheditor({   //初始化 富文件编辑框
+                    html5Upload:false,
+                    upMultiple:"1",
+    
+                    upLinkRrl:"upload.html",
+                    upLinkExt:"zip,rar,txt",
+    
+                    upImgUrl:"/comment/uploadImg",
+                    upImgExt:"jpg,jpeg,gif,png",
+    
+                    upFlashUrl:"upload.php",
+                    upFlashExt:"swf",
+    
+                    upMediaUrl:"upload.php",
+                    upMediaExt:"wmv,avi,wma,mp3,mid"
+                },{emotPath:'/javascripts/xheditor/xheditor_emot'});
+            };
+    
+            function insertUpload(arrMsg){
+                console.log(arrMsg);
+                var i,msg;
+                for(var i=0;i<arrMsg.length;i++){
+                    msg=arrMsg[i];
+                    console.log(msg);
+                    $("#uploadList").append('<option value="'+msg.id+'">'+msg.localname+'</option>')
+                }
+            };
+    
+            function submitForm(){
+                $("#frmDemo").submit();
+            }
+        </script> -->
+</body>
+</html>
