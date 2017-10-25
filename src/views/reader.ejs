@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>读者界面</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript" src="/bootstrap/js/jquery-1.10.1.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <%- include("header")%>
+    <div class="container">
+        <form class="form-inline" action="/search" method="post">
+            <div class="form-group row">
+                <input type="text" name="username" class="form-control" id="search" placeholder="请搜索">
+                <button type="submit" class="btn btn-primary">搜索</button>
+            </div>
+        </form>
+    </div>
+    <section>
+        <ul class="blist">
+            <% result.forEach((item,index)=>{%>
+                <li>
+                    <div>
+                        <a href="/comment?id=<%- item.id%>">
+                            <img src="<%- item.images.large%>" alt="">
+                            <h3><%- item.title%></h3>
+                            <h5><%- item.author%>&nbsp;著</h5>
+                            <time><%- item.pubdate%></time>
+                        </a>
+                    </div>
+                </li> 
+            <% })%>
+        </ul>
+    </section>
+</body>
+</html>

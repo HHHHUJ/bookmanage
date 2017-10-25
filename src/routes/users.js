@@ -12,6 +12,9 @@ router.post('/register',(req,res)=>{
     var username = req.body.username;
     var password = req.body.password;
     var repassword = req.body.repassword;
+    var d = new Date();
+    var newD = date1String(d);
+    var newDate = newD.slice(0,10);
       var insertData = function(db,callback){
         var conn = db.collection("readerinfo");
           async.waterfall([
@@ -29,7 +32,7 @@ router.post('/register',(req,res)=>{
                if(arg){
                  callback(null,0)//不能注册
                }else{
-                 conn.insert({username:username,password:password},(err,result)=>{
+                 conn.insert({username:username,password:password,date:newDate},(err,result)=>{
                       callback(null,1)//可以注册
                  }) 
                }
@@ -75,7 +78,7 @@ router.post('/login',(req,res)=>{
         res.redirect('/reader')
       }else{
         //数据库没有你的信息
-        res.send(`<script>alert("登录失败");location.href='/login'</script>`)
+        res.send(`<script>alert("登录失败");location.href='/'</script>`)
       }
     })
   })
@@ -93,6 +96,7 @@ router.post('/managerlogin',(req,res)=>{
       if(err) throw err;
       var len = result.length;
       if(len>0){
+        req.session.username = username;
         res.redirect('/manager')
       }else{
         res.send(`<script>alert("登录失败");location.href='/managerlogin'</script>`)
@@ -100,4 +104,14 @@ router.post('/managerlogin',(req,res)=>{
     }) 
   })
 });
+
+
+function date1String(date,sign){
+  sign = sign==undefined?'/':sign;
+  return date.getFullYear()+sign+isDblNum(date.getMonth()+1)+sign+isDblNum(date.getDate())+' '+isDblNum(date.getHours())+":"+isDblNum(date.getMinutes())+':'+isDblNum(date.getSeconds());
+}
+//把个位数补上零
+function isDblNum(item){
+  return item = item<10?'0'+item:item;
+}
 module.exports = router;
