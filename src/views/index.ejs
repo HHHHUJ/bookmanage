@@ -7,9 +7,10 @@
     <script type="text/javascript" src="/bootstrap/js/jquery-1.10.1.js"></script>
     <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
   </head>
-  <body>
+  <body id="body">
+    <%- include("header")%>
       <div class="container">
-          <form action="users/login" method="post">
+          <form action="users/login" method="post" class="row">
               <div class="form-group">
                 <label for="username">用户名</label>
                 <input type="text" name="username" class="form-control" id="username" placeholder="请输入账号">
@@ -18,15 +19,10 @@
                 <label for="password">密码</label>
                 <input type="password" name="password" class="form-control" id="password" placeholder="请输入密码">
               </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox"> Check me out
-                </label>
-              </div>
-              <button type="submit" class="btn btn-success">读者登录</button>
-            </form>
-            <button type="button" class="btn btn-primary" onclick="window.location.href='/register'">注册</button>
-            <button type="submit" class="btn btn-success" onclick="window.location.href='/managerlogin'">管理员登录</button>
+              <button type="submit" class="btn btn-success form-control" style="margin-top:10px;">读者登录</button>
+              <button type="button" class="btn btn-primary form-control" style="margin-top:10px;" onclick="window.location.href='/register'">注册</button>
+              <button type="button" class="btn btn-info form-control" style="margin-top:10px;" onclick="window.location.href='/managerlogin'">管理员登录</button>
+          </form>
       </div>
   </body>
 </html>

@@ -19,7 +19,7 @@
             <div class="bookTop">
                 <div class="bookDetail">
                     <div class="bookD">
-                            <img src="https://img1.doubanio.com/lpic/s4679829.jpg" alt="">
+                            <img src="<%- book.images.large%>" alt="">
                             <div class="bookDetailR">
                                 <h2><%- book.title%></h2>
                                 <ul>
@@ -47,35 +47,32 @@
                 </div>
             </div>
             <div class="bookComment">
-                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">说点什么好呢？</button>
+                <button type="button" id="announce"><a>说点什么好呢？</a></button>
                 <div class="top">
                     <h2>短评......</h2>
                 </div>
                 <ul>
+                    <li id="QSF">
+                        <p>抢沙发.....</p>
+                    </li>
                     <li>
                         <p><em><%- readerinfo.username%></em>看过<time><%- readerinfo.date%></time></p>
-                        <p>123</p>
+                        <p></p>
                     </li>
                 </ul>
             </div>
+            <!-- action="/list?id=<%- book.id%>" method="post"  -->
+            <form id="commentForm">
+                <h6>短评...... <i id="closed">×</i></h6>
+                <label for="">
+                    <textarea name="content" id="content"></textarea>
+                </label>
+                <label for="">
+                    <input type="button" value="发表" id="announceSubmit" onclick="commentPost()">
+                </label>
+            </form>
         </div>
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-                </div>
-            </div>
-        </div>
+     
         <!-- <script type="text/javascript">
             $(pageInit);
     
@@ -116,3 +113,21 @@
         </script> -->
 </body>
 </html>
+<script>
+    $(function(){
+        var commentForm = $('#commentForm');
+        var announce = $('#announce');
+        var closed = $('#closed');
+        announce.click(()=>{
+            commentForm.css({
+                display:"block"
+            })
+        })
+        closed.click(()=>{
+            commentForm.css({
+                display:"none"
+            })
+        })
+       
+     })
+</script>

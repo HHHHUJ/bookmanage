@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>管理者界面</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript" src="/bootstrap/js/jquery-1.10.1.js"></script>
+</head>
+<body>
+    <%- include("header")%>
+    <div class="managerTop">
+        <button onclick="window.location.href='/root/readersinfo'">读者信息</button>
+        <button onclick="window.location.href='/root/booksinfo'">图书信息</button>
+        <button onclick="window.location.href='/root/addbooks'">新书入库</button>
+    </div>
+</body>
+</html>

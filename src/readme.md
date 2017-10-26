@@ -1,4 +1,6 @@
 1.豆瓣API:https://api.douban.com/v2/book/search?q=a
+http://jquery.cuishifeng.cn/
+
 2.LiveReloaz自动刷新页面
 3.图书管理系统
     读者：

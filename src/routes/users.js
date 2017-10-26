@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var conn = require('../utils/conn.js')
 var async = require('async');
+var id = 512017000;
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -14,6 +15,7 @@ router.post('/register',(req,res)=>{
     var repassword = req.body.repassword;
     var d = new Date();
     var newD = date1String(d);
+    id++;
     var newDate = newD.slice(0,10);
       var insertData = function(db,callback){
         var conn = db.collection("readerinfo");
@@ -32,7 +34,7 @@ router.post('/register',(req,res)=>{
                if(arg){
                  callback(null,0)//不能注册
                }else{
-                 conn.insert({username:username,password:password,date:newDate},(err,result)=>{
+                 conn.insert({username:username,password:password,date:newDate,id:id},(err,result)=>{
                       callback(null,1)//可以注册
                  }) 
                }

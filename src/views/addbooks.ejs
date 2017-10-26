@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>新书入库</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript" src="/bootstrap/js/jquery-1.10.1.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <%- include("header")%>
+    <div class="container">
+        <!-- action="/root/addABook" method="post" -->
+        <form class="row">
+            <div class="form-group col-md-6">
+                <label for="username">书名</label>
+                <input type="text"  class="form-control" id="username" name="username" placeholder="请输入书名">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="author">作者</label>
+                <input type="text" class="form-control" id="author" name="author" placeholder="请输入作者名称">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="isbn10">isbn10</label>
+                <input type="text" class="form-control" id="isbn10"  name="isbn10" placeholder="请输入索引号">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="id">id</label>
+                <input type="text" class="form-control" id="id" name="id" placeholder="请输入ID号">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="author_intro">作者简介</label>
+                <input type="text" class="form-control" id="author_intro" name="author_intro" placeholder="请输入作者简介">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="price">价格</label>
+                <input type="text" class="form-control" id="price" name="price" placeholder="请输入价格">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="publisher">出版社</label>
+                <input type="text" class="form-control" id="publisher" name="publisher" placeholder="请输入出版社">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="pubdate">出版时间</label>
+                <input type="text" class="form-control" id="pubdate" name="pubdate" placeholder="请输入出版时间">
+            </div>
+            <div class="form-group">
+                <label for="content">这本书的简介</label>
+                <textarea name="content" id="content" class="form-control" cols="30" rows="10"></textarea>
+            </div>
+            <button type="button" class="btn btn-success btn-block" onclick="post()">新增</button>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    function post(){
+        $.post("/root/addABook",{
+            publisher:$("publisher").val(),
+            author:$("author").val(),
+            title:$("title").val(),
+            content:$("content").val(),
+            pubdate:$("pubdate").val(),
+            price:$("price").val(),
+            author_intro:$("author_intro").val(),
+            isbn10:$("isbn10").val(),
+            id:$("id").val(),
+        },function(data){
+            if(data==1){
+                alert('入库成功')
+            }
+        })
+    }
+</script>
