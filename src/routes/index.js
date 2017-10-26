@@ -25,7 +25,6 @@ router.get('/reader',(req,res)=>{
         if(err) throw err;
         console.log("数据库连接成功!")
         findData(db,function(result){
-          console.log(result)
             res.render("reader",{result});
         })
     })
@@ -58,9 +57,10 @@ router.post('/search',(req,res)=>{
 
 //书籍详情和读者评论页面
 router.get('/comment',(req,res)=>{
-  var bid = req.query.id;//获取书籍的id
+  var bid = req.query.id;//获取书籍的id 
   var username = req.session.username;
   var findData = function(db,callback){
+    console.log(bid)
     var book = db.collection('book');
     var readerinfo = db.collection('readerinfo');
     async.series([
@@ -75,7 +75,7 @@ router.get('/comment',(req,res)=>{
         //获取用户数据库
         readerinfo.find({username:username},{username:1,date:1,_id:0}).toArray((err,result)=>{
           console.log('获取用户数据库成功');
-          callback(null,result);
+          callback(null,result)
         })
       }
     ],
@@ -87,7 +87,7 @@ router.get('/comment',(req,res)=>{
   conn.getDb((err,db)=>{
     if(err) throw err;
     findData(db,(result)=>{
-        // data = Object.assign(data,{readerinfo:result[1]},{book:result[0]});
+        //data = Object.assign(data,{readerinfo:result[1]},{book:result[0]});
         res.render('comment',{
           readerinfo:result[1][0],
           book:result[0]
@@ -95,6 +95,7 @@ router.get('/comment',(req,res)=>{
     })
   })
 })
+
 
 // router.post('/list',(req,res)=>{
 //     var content = req.body.content;

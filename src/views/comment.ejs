@@ -68,7 +68,7 @@
                     <textarea name="content" id="content"></textarea>
                 </label>
                 <label for="">
-                    <input type="button" value="发表" id="announceSubmit" onclick="commentPost()">
+                    <button id="announceSubmit">发表</button>
                 </label>
             </form>
         </div>
@@ -91,7 +91,6 @@
     
                     upFlashUrl:"upload.php",
                     upFlashExt:"swf",
-    
                     upMediaUrl:"upload.php",
                     upMediaExt:"wmv,avi,wma,mp3,mid"
                 },{emotPath:'/javascripts/xheditor/xheditor_emot'});
@@ -116,8 +115,8 @@
 <script>
     $(function(){
         var commentForm = $('#commentForm');
-        var announce = $('#announce');
         var closed = $('#closed');
+        var announce = $('#announce')
         announce.click(()=>{
             commentForm.css({
                 display:"block"
@@ -128,6 +127,6 @@
                 display:"none"
             })
         })
-       
+
      })
-</script>
+</script>   

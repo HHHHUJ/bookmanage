@@ -64,7 +64,7 @@ router.post('/login',(req,res)=>{
   var password = req.body.password;
   var findData = function(db,callback){
     var collection = db.collection("readerinfo");
-    collection.find({username:username,password:password}).toArray((err,result)=>{
+    collection.find({username:username},{_id:0,username:1,password:1,id:1}).toArray((err,result)=>{
       if(err) throw err;
       callback(result);
     })
@@ -72,11 +72,10 @@ router.post('/login',(req,res)=>{
   conn.getDb((err,db)=>{
     if(err) throw err;
     findData(db,function(result){
-      console.log(result);
       if(result.length>0){
         //数据库有你的信息
         req.session.username = username;
-        console.log(req.session)
+        req.session.uid = result[0].id;
         res.redirect('/reader')
       }else{
         //数据库没有你的信息
