@@ -19,7 +19,7 @@
             <div class="bookTop">
                 <div class="bookDetail">
                     <div class="bookD">
-                            <img src="<%- book.images.large%>" alt="">
+                            <img src="<%- book.images.large %>" alt="">
                             <div class="bookDetailR">
                                 <h2><%- book.title%></h2>
                                 <ul>
@@ -72,48 +72,10 @@
                 </label>
             </form>
         </div>
-     
-        <!-- <script type="text/javascript">
-            $(pageInit);
-    
-            //  comment.ejs  /comment/index
-            function pageInit(){
-                $.extend(XHEDITOR.settings,{shortcuts:{"ctrl+enter":submitForm}});
-                $("#content").xheditor({   //初始化 富文件编辑框
-                    html5Upload:false,
-                    upMultiple:"1",
-    
-                    upLinkRrl:"upload.html",
-                    upLinkExt:"zip,rar,txt",
-    
-                    upImgUrl:"/comment/uploadImg",
-                    upImgExt:"jpg,jpeg,gif,png",
-    
-                    upFlashUrl:"upload.php",
-                    upFlashExt:"swf",
-                    upMediaUrl:"upload.php",
-                    upMediaExt:"wmv,avi,wma,mp3,mid"
-                },{emotPath:'/javascripts/xheditor/xheditor_emot'});
-            };
-    
-            function insertUpload(arrMsg){
-                console.log(arrMsg);
-                var i,msg;
-                for(var i=0;i<arrMsg.length;i++){
-                    msg=arrMsg[i];
-                    console.log(msg);
-                    $("#uploadList").append('<option value="'+msg.id+'">'+msg.localname+'</option>')
-                }
-            };
-    
-            function submitForm(){
-                $("#frmDemo").submit();
-            }
-        </script> -->
 </body>
 </html>
 <script>
-    $(function(){
+     $(function(){
         var commentForm = $('#commentForm');
         var closed = $('#closed');
         var announce = $('#announce')
@@ -127,6 +89,17 @@
                 display:"none"
             })
         })
-
+        $('#announceSubmit').on('click',function(){
+            var getdata = $('#content').val();
+            $.ajax({
+                url:"/hhh",
+                type:"post",
+                processData:false,
+                data:{content:getdata},
+                success:function(data){
+                    console.log(data)
+                }
+        })
+        })
      })
 </script>   

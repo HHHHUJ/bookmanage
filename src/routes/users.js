@@ -35,6 +35,9 @@ router.post('/register',(req,res)=>{
                  callback(null,0)//不能注册
                }else{
                  conn.insert({username:username,password:password,date:newDate,id:id},(err,result)=>{
+                   console.log("################################")
+                      req.session.uid = id;
+                      console.log(req.session)
                       callback(null,1)//可以注册
                  }) 
                }

@@ -16,8 +16,8 @@
         <!-- action="/root/addABook" method="post" -->
         <form class="row">
             <div class="form-group col-md-6">
-                <label for="username">书名</label>
-                <input type="text"  class="form-control" id="username" name="username" placeholder="请输入书名">
+                <label for="title">书名</label>
+                <input type="text"  class="form-control" id="title" name="title" placeholder="请输入书名">
             </div>
             <div class="form-group col-md-6">
                 <label for="author">作者</label>
@@ -59,15 +59,15 @@
 <script>
     function post(){
         $.post("/root/addABook",{
-            publisher:$("publisher").val(),
-            author:$("author").val(),
-            title:$("title").val(),
-            content:$("content").val(),
-            pubdate:$("pubdate").val(),
-            price:$("price").val(),
-            author_intro:$("author_intro").val(),
-            isbn10:$("isbn10").val(),
-            id:$("id").val(),
+            publisher:$("#publisher").val(),
+            author:$("#author").val(),
+            title:$("#title").val(),
+            content:$("#content").val(),
+            pubdate:$("#pubdate").val(),
+            price:$("#price").val(),
+            author_intro:$("#author_intro").val(),
+            isbn10:$("#isbn10").val(),
+            id:$("#id").val()
         },function(data){
             if(data==1){
                 alert('入库成功')

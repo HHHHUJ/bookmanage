@@ -55,6 +55,7 @@ router.post('/search',(req,res)=>{
     })
   })
 
+
 //书籍详情和读者评论页面
 router.get('/comment',(req,res)=>{
   var bid = req.query.id;//获取书籍的id 
@@ -73,7 +74,7 @@ router.get('/comment',(req,res)=>{
       },
       function(callback){
         //获取用户数据库
-        readerinfo.find({username:username},{username:1,date:1,_id:0}).toArray((err,result)=>{
+        readerinfo.find({username:username},{username:1,date:1,_id:0,id:1}).toArray((err,result)=>{
           console.log('获取用户数据库成功');
           callback(null,result)
         })
@@ -96,47 +97,15 @@ router.get('/comment',(req,res)=>{
   })
 })
 
-
-// router.post('/list',(req,res)=>{
-//     var content = req.body.content;
-//     var mid = req.query.id;
-//     // $ = cheerio.load( ' <ul><li><p><em></em><time></time></p><p></p></li></ul>')
-//     // var li = $('li').clone();
-//     // console.log(li);
-//     // $('ul').prepend(li);
-//     var username = req.session.username;
-//     console.log(username)
-//         conn.getDb((err,db)=>{
-//             if(err) throw err;
-//             var comment = db.collection('comment');
-//             var ids = db.collection('ids');
-//             var readerinfo = db.collection('readerinfo');
-//             async.waterfall([
-//                 function(callback){
-//                     ids.findAndModify(
-//                         {name:"comment"},  
-//                         [["_id","desc"]],  
-//                         {$inc:{id:1}},  
-//                         function(err,result){
-//                             if(err) throw err;
-//                             console.log(result)
-//                             callback(null,result.value.id);
-//                         }
-//                     )
-//                 },
-//                 function(uid,callback){ 
-//                       comment.insert({uid:uid,username:username,content:content,mid:mid,_id:0},(err,result)=>{
-//                         if(err) throw err;
-//                         callback(null,result.ops[0]);
-//                     })
-//                 }
-//             ],function(err,result){
-//                 if(err) throw err;
-//                 req.session.obj = result;
-//                 res.redirect('/comment');
-//             })
-//         })
-// })
+router.post("/hhh",(req,res)=>{
+    var content = req.body.content;
+    conn.getDb((err,db)=>{
+      if(err) throw err;
+      var comment = db.collection("comment");
+      comment.insert({content:content})
+        res.send(content);
+    })
+})
 
 router.get('/managerlogin',(req,res)=>{
   res.render('managerlogin')
@@ -144,6 +113,7 @@ router.get('/managerlogin',(req,res)=>{
 router.get('/manager',(req,res)=>{
   res.render('manager')
 })
+
 
 
 module.exports = router;

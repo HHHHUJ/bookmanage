@@ -30,7 +30,7 @@
                 <td><%- item.isbn10%></td>
                 <td><%- item.id%></td>
                 <td>
-                    <button type="button" class="btn btn-primary btn-sm" >删除</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='/root/delete?id=<%- item.id%>'">删除</button>
                     <button type="button" class="btn btn-info btn-sm">修改</button>
                 </td>            
             </tr>

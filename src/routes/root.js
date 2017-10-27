@@ -25,7 +25,7 @@ router.post('/addABook',(req,res)=>{
     conn.getDb((err,db)=>{
         if(err) throw err;
         var book = db.collection('book');
-        book.insert({_id:0,id:1,summary:1,author_intro:1,title:1,author:1,price:1,publisher:1,isbn10:1,pubdate:1});
+        book.insert({id:id,summary:summary,author_intro:author_intro,title:title,author:author,price:price,publisher:publisher,isbn10:isbn10,pubdate:pubdate});
         res.send("1");
     })
 })
@@ -33,17 +33,17 @@ router.post('/addABook',(req,res)=>{
 router.get('/booksinfo',(req,res)=>{
     var pagecount = 10;//每页的数据量
     var pagetotal = 0;//总页数
-    var pageNo = req.query["pageNo"]; 
-    console.log(pageNo);    
+    var pageNo = req.query["pageNo"];   
     pageNo = pageNo?parseInt(pageNo):1;
     var count = 0;
+    console.log("hhhhhhhhhhhhhhhhhhhhhhhhh")
     var findData = function(db,callback){
         var book = db.collection('book');
         async.waterfall([
             function(callback){
                 book.find({},{_id:0,id:1,isbn10:1,title:1,author:1}).toArray((err,result)=>{
                    count = result.length;//总数据量60
-                   if(count>1){
+                   if(count>=1){
                         pagetotal = Math.ceil(count/pagecount);//6
                         pageNo = pageNo<=1?1:pageNo;
                         pageNo = pageNo>=pagetotal?pagetotal:pageNo;
@@ -58,7 +58,6 @@ router.get('/booksinfo',(req,res)=>{
                     book.find({},{_id:0,id:1,isbn10:1,title:1,author:1}).sort({_id:-1}).skip((pageNo-1)*pagecount).limit(pagecount).toArray((err,result)=>{
                         if(err) throw err;
                         console.log("查询当前pageNo 数据成功");
-                        console.log(result);
                         callback(null,result);
                     })
                 }else{
@@ -80,25 +79,24 @@ router.get('/booksinfo',(req,res)=>{
                pagecount:pagecount
            })
         })
-           
     })
 })
 
 //读者信息
 router.get('/readersinfo',(req,res)=>{
-    var pagecount = 10;//每页的数据量
-    var pagetotal = 0;//总页数
-    var pageNo = req.query["pageNo"]; 
-    console.log(pageNo);    
-    pageNo = pageNo?parseInt(pageNo):1;
-    var count = 0;
-    var findData = function(db,callback){
+   if(0){
+        var pagecount = 10;//每页的数据量
+        var pagetotal = 0;//总页数
+        var pageNo = req.query["pageNo"];    
+        pageNo = pageNo?parseInt(pageNo):1;
+        var count = 0;
+        var findData = function(db,callback){
         var readerinfo = db.collection('readerinfo');
         async.waterfall([
             function(callback){
                 readerinfo.find({},{_id:0,id:1,username:1,password:1,date:1}).toArray((err,result)=>{
                    count = result.length;
-                   if(count>1){
+                   if(count>=1){
                         pagetotal = Math.ceil(count/pagecount);
                         pageNo = pageNo<=1?1:pageNo;
                         pageNo = pageNo>=pagetotal?pagetotal:pageNo;
@@ -113,7 +111,6 @@ router.get('/readersinfo',(req,res)=>{
                     readerinfo.find({},{_id:0,id:1,username:1,password:1,date:1}).sort({_id:-1}).skip((pageNo-1)*pagecount).limit(pagecount).toArray((err,result)=>{
                         if(err) throw err;
                         console.log("查询当前pageNo 数据成功");
-                        console.log(result);
                         callback(null,result);
                     })
                 }else{
@@ -134,11 +131,72 @@ router.get('/readersinfo',(req,res)=>{
                pagetotal:pagetotal,
                pagecount:pagecount
            })
-        })
-           
+        })   
+        
+    })
+   }else{
+       res.render("readersinfo",{
+            result:[{id:"暂无数据...",username:"暂无数据...",password:"暂无数据...",date:"暂无数据..."}],
+            count:0,
+            pageNo:1,
+            pagetotal:1,
+            pagecount:10
+       })
+   }
+})
+
+//删除读者信息
+router.get('/forbidden',(req,res)=>{
+    var id = parseInt(req.query.id);
+    console.log(id)
+    console.log("hujie")
+    conn.getDb((err,db)=>{
+        if(err) throw err;
+        var coll = db.collection('readerinfo');
+        coll.deleteOne({id:id});
+          res.redirect('/root/readersinfo') ;
     })
 })
 
 
+//删除图书信息
+router.get('/delete',(req,res)=>{
+    var id = req.query.id;
+    conn.getDb((err,db)=>{
+        if(err) throw err;
+        var coll = db.collection('book');
+        coll.deleteOne({id:id});
+        res.redirect("/root/booksinfo") 
+    })
+})
 
+//修改数据库
+router.get('/edit',(req,res)=>{
+    var result = req.query.id;
+    console.log(result)
+    res.render('edit',{result})
+})
+router.post('/modify',(req,res)=>{
+    var data = req.body;
+    var id = data.id;
+    console.log(id)
+    var username = data.username;
+    var password = data.password;
+    var date = data.date;
+    var uid = parseInt(req.query.id);
+    conn.getDb((err,db)=>{
+        if(err) throw err;
+        console.log("连接数据库成功")
+        db.collection('readerinfo').update({id:uid},{
+           $set:{username:username,password:password,date:date}
+        })
+            res.redirect("/root/readersinfo")
+        })
+})
+
+
+
+    
+
+    
 module.exports = router;

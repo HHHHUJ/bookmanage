@@ -16,10 +16,10 @@
             <caption class="h1 text-info">读者信息列表</caption>
             <tr class="text-danger text-center">
                 <td style="width:10%;">序号</td>
-                <td style="width:5%;">ID</td>
+                <td style="width:10%;">ID</td>
                 <td style="width:25%;">用户名</td>
                 <td style="width:25%;">密码</td>
-                <td style="width:15%;">注册时间</td>
+                <td style="width:10%;">注册时间</td>
                 <td style="width:20%;">操作</td>
             </tr>
             <% result.forEach((item,index)=>{%>
@@ -30,8 +30,8 @@
                     <td><%- item.password%></td>
                     <td><%- item.date%></td>
                     <td>
-                        <button type="button" class="btn btn-primary btn-sm" >删除</button>
-                        <button type="button" class="btn btn-info btn-sm">修改</button>
+                        <button class="btn btn-danger" onclick="location.href='/root/forbidden?id=<%- item.id %>'">禁用</button>
+                        <button class="btn btn-primary" onclick="location.href='/root/edit?id=<%- item.id %>'">修改</button>
                     </td>            
                 </tr>
             <% }) %>
