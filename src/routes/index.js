@@ -97,13 +97,24 @@ router.get('/comment',(req,res)=>{
   })
 })
 
-router.post("/hhh",(req,res)=>{
-    var content = req.body.content;
+router.get("/hhh",(req,res)=>{
+  var username = req.session.username;
+    var content = req.query.content;
     conn.getDb((err,db)=>{
       if(err) throw err;
       var comment = db.collection("comment");
-      comment.insert({content:content})
-        res.send(content);
+      var readerinfo = db.collection("readerinfo");
+      readerinfo.find({username:username},{username:1,_id:0,id:1,date:1}).toArray((err,result)=>{
+        if(err) throw err; 
+        var id = result[0].id;
+        comment.insert({content:content,id:id})
+        res.send({
+          result:result[0],
+          content:content
+        });
+      })
+      
+       
     })
 })
 

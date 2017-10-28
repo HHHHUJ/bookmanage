@@ -84,7 +84,7 @@ router.get('/booksinfo',(req,res)=>{
 
 //读者信息
 router.get('/readersinfo',(req,res)=>{
-   if(0){
+   if(count>0){
         var pagecount = 10;//每页的数据量
         var pagetotal = 0;//总页数
         var pageNo = req.query["pageNo"];    
@@ -131,10 +131,12 @@ router.get('/readersinfo',(req,res)=>{
                pagetotal:pagetotal,
                pagecount:pagecount
            })
+           db.close();
         })   
         
     })
    }else{
+       console.log("#######################")
        res.render("readersinfo",{
             result:[{id:"暂无数据...",username:"暂无数据...",password:"暂无数据...",date:"暂无数据..."}],
             count:0,
@@ -194,7 +196,20 @@ router.post('/modify',(req,res)=>{
         })
 })
 
-
+var count = function readerCount(){
+    conn.getDb((err,db)=>{
+        if(err) throw err;
+        var readerinfo = db.collection('readerinfo');
+        readerinfo.find().toArray((err,result)=>{
+            if(err) throw err;
+            var readerCount = result.length;
+            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+            console.log(readerCount)
+            db.close();
+            return readerCount;
+        })
+    })
+}();
 
     
 
