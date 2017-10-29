@@ -85,16 +85,40 @@ router.get('/comment',(req,res)=>{
         callback(result);
     })
   }
+
+  //分割线############################################################
   conn.getDb((err,db)=>{
     if(err) throw err;
-    findData(db,(result)=>{
-        //data = Object.assign(data,{readerinfo:result[1]},{book:result[0]});
-        res.render('comment',{
-          readerinfo:result[1][0],
-          book:result[0]
+    var comment = db.collection('comment');
+    comment.find({},{_id:0}).toArray((err,result)=>{
+      if(err) throw err;
+      console.log("********************")
+      var temp = result;
+      console.log(temp)
+      var len = result.length;
+      if(len>=0){
+            findData(db,(result)=>{
+                //data = Object.assign(data,{readerinfo:result[1]},{book:result[0]});
+                res.render('comment',{
+                  readerinfo:result[1][0],
+                  book:result[0],
+                  text:temp,
+                  flag:true
+                })
+            })
+      }else{
+        findData(db,(result)=>{
+            //data = Object.assign(data,{readerinfo:result[1]},{book:result[0]});
+            res.render('comment',{
+              readerinfo:result[1][0],
+              book:result[0],
+              flag:false
+            })
         })
+      }
     })
   })
+  
 })
 
 router.get("/hhh",(req,res)=>{
@@ -107,14 +131,12 @@ router.get("/hhh",(req,res)=>{
       readerinfo.find({username:username},{username:1,_id:0,id:1,date:1}).toArray((err,result)=>{
         if(err) throw err; 
         var id = result[0].id;
-        comment.insert({content:content,id:id})
+        comment.insert({content:content,id:id,username:result[0].username,date:result[0].date})
         res.send({
           result:result[0],
           content:content
         });
       })
-      
-       
     })
 })
 
@@ -128,3 +150,6 @@ router.get('/manager',(req,res)=>{
 
 
 module.exports = router;
+
+
+

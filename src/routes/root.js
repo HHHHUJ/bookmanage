@@ -4,7 +4,7 @@ var async = require("async");
 var conn = require("../utils/conn");   // 引用关系不变
 var multiparty = require("multiparty");
 var fs = require("fs");
-
+var infoCount = require('../utils/root')
 //进入新书入库界面
 router.get('/addbooks',(req,res)=>{
     res.render('addbooks')
@@ -31,127 +31,139 @@ router.post('/addABook',(req,res)=>{
 })
 //管理图书信息
 router.get('/booksinfo',(req,res)=>{
-    var pagecount = 10;//每页的数据量
-    var pagetotal = 0;//总页数
-    var pageNo = req.query["pageNo"];   
-    pageNo = pageNo?parseInt(pageNo):1;
-    var count = 0;
-    console.log("hhhhhhhhhhhhhhhhhhhhhhhhh")
-    var findData = function(db,callback){
-        var book = db.collection('book');
-        async.waterfall([
-            function(callback){
-                book.find({},{_id:0,id:1,isbn10:1,title:1,author:1}).toArray((err,result)=>{
-                   count = result.length;//总数据量60
-                   if(count>=1){
-                        pagetotal = Math.ceil(count/pagecount);//6
-                        pageNo = pageNo<=1?1:pageNo;
-                        pageNo = pageNo>=pagetotal?pagetotal:pageNo;
-                        callback(null,true);
-                   }else{
-                       callback(null,false)
-                   }
+    infoCount.fn.infoCount("book",(count)=>{
+        if(count>=1){
+            var pagecount = 10;//每页的数据量
+            var pagetotal = 0;//总页数
+            var pageNo = req.query["pageNo"];   
+            pageNo = pageNo?parseInt(pageNo):1;
+            var count = 0;
+            console.log("hhhhhhhhhhhhhhhhhhhhhhhhh")
+            var findData = function(db,callback){
+                var book = db.collection('book');
+                async.waterfall([
+                    function(callback){
+                        book.find({},{_id:0,id:1,isbn10:1,title:1,author:1}).toArray((err,result)=>{
+                           count = result.length;//总数据量60
+                           if(count>=1){
+                                pagetotal = Math.ceil(count/pagecount);//6
+                                pageNo = pageNo<=1?1:pageNo;
+                                pageNo = pageNo>=pagetotal?pagetotal:pageNo;
+                                callback(null,true);
+                           }else{
+                               callback(null,false)
+                           }
+                        })
+                    },
+                    function(flag,callback){
+                        if(flag){
+                            book.find({},{_id:0,id:1,isbn10:1,title:1,author:1}).sort({_id:-1}).skip((pageNo-1)*pagecount).limit(pagecount).toArray((err,result)=>{
+                                if(err) throw err;
+                                console.log("查询当前pageNo 数据成功");
+                                callback(null,result);
+                            })
+                        }else{
+                            callback(null,false);
+                        } 
+                    }
+                ],function(err,result){
+                    callback(result);
                 })
-            },
-            function(flag,callback){
-                if(flag){
-                    book.find({},{_id:0,id:1,isbn10:1,title:1,author:1}).sort({_id:-1}).skip((pageNo-1)*pagecount).limit(pagecount).toArray((err,result)=>{
-                        if(err) throw err;
-                        console.log("查询当前pageNo 数据成功");
-                        callback(null,result);
-                    })
-                }else{
-                    callback(null,false);
-                } 
             }
-        ],function(err,result){
-            callback(result);
-        })
-    }
-    conn.getDb((err,db)=>{
-        if(err) throw err;
-        findData(db,(result)=>{
-            res.render('booksinfo',{
-               result:result,
-               count:count,
-               pageNo:pageNo,
-               pagetotal:pagetotal,
-               pagecount:pagecount
+            conn.getDb((err,db)=>{
+                if(err) throw err;
+                findData(db,(result)=>{
+                    res.render('booksinfo',{
+                       result:result,
+                       count:count,
+                       pageNo:pageNo,
+                       pagetotal:pagetotal,
+                       pagecount:pagecount
+                   })
+                })
+            })
+        }else{
+            res.render("booksinfo",{
+                result:[{title:"暂无数据...",author:"暂无数据...",isbn10:"暂无数据...",id:"暂无数据..."}],
+                count:0,
+                pageNo:1,
+                pagetotal:1,
+                pagecount:10
            })
-        })
+        }
     })
 })
 
 //读者信息
 router.get('/readersinfo',(req,res)=>{
-   if(count>0){
-        var pagecount = 10;//每页的数据量
-        var pagetotal = 0;//总页数
-        var pageNo = req.query["pageNo"];    
-        pageNo = pageNo?parseInt(pageNo):1;
-        var count = 0;
-        var findData = function(db,callback){
-        var readerinfo = db.collection('readerinfo');
-        async.waterfall([
-            function(callback){
-                readerinfo.find({},{_id:0,id:1,username:1,password:1,date:1}).toArray((err,result)=>{
-                   count = result.length;
-                   if(count>=1){
-                        pagetotal = Math.ceil(count/pagecount);
-                        pageNo = pageNo<=1?1:pageNo;
-                        pageNo = pageNo>=pagetotal?pagetotal:pageNo;
-                        callback(null,true);
-                   }else{
-                       callback(null,false)
-                   }
+   infoCount.fn.infoCount("readerinfo",(count)=>{
+        if(count>=1){
+             var pagecount = 10;//每页的数据量
+             var pagetotal = 0;//总页数
+             var pageNo = req.query["pageNo"];    
+             pageNo = pageNo?parseInt(pageNo):1;
+             var count = 0;
+             var findData = function(db,callback){
+             var readerinfo = db.collection('readerinfo');
+             async.waterfall([
+                 function(callback){
+                     readerinfo.find({},{_id:0,id:1,username:1,password:1,date:1}).toArray((err,result)=>{
+                        count = result.length;
+                        if(count>=1){
+                             pagetotal = Math.ceil(count/pagecount);
+                             pageNo = pageNo<=1?1:pageNo;
+                             pageNo = pageNo>=pagetotal?pagetotal:pageNo;
+                             callback(null,true);
+                        }else{
+                            callback(null,false)
+                        }
+                     })
+                 },
+                 function(flag,callback){
+                     if(flag){
+                         readerinfo.find({},{_id:0,id:1,username:1,password:1,date:1}).sort({_id:-1}).skip((pageNo-1)*pagecount).limit(pagecount).toArray((err,result)=>{
+                             if(err) throw err;
+                             console.log("查询当前pageNo 数据成功");
+                             callback(null,result);
+                         })
+                     }else{
+                         callback(null,false);
+                     } 
+                 }
+             ],function(err,result){
+                 callback(result);
+             })
+         }
+         conn.getDb((err,db)=>{
+             if(err) throw err;
+             findData(db,(result)=>{
+                 res.render('readersinfo',{
+                    result:result,
+                    count:count,
+                    pageNo:pageNo,
+                    pagetotal:pagetotal,
+                    pagecount:pagecount
                 })
-            },
-            function(flag,callback){
-                if(flag){
-                    readerinfo.find({},{_id:0,id:1,username:1,password:1,date:1}).sort({_id:-1}).skip((pageNo-1)*pagecount).limit(pagecount).toArray((err,result)=>{
-                        if(err) throw err;
-                        console.log("查询当前pageNo 数据成功");
-                        callback(null,result);
-                    })
-                }else{
-                    callback(null,false);
-                } 
-            }
-        ],function(err,result){
-            callback(result);
-        })
-    }
-    conn.getDb((err,db)=>{
-        if(err) throw err;
-        findData(db,(result)=>{
-            res.render('readersinfo',{
-               result:result,
-               count:count,
-               pageNo:pageNo,
-               pagetotal:pagetotal,
-               pagecount:pagecount
-           })
-           db.close();
-        })   
-        
-    })
-   }else{
-       console.log("#######################")
-       res.render("readersinfo",{
-            result:[{id:"暂无数据...",username:"暂无数据...",password:"暂无数据...",date:"暂无数据..."}],
-            count:0,
-            pageNo:1,
-            pagetotal:1,
-            pagecount:10
-       })
-   }
+                db.close();
+             })   
+             
+         })
+        }else{
+            res.render("readersinfo",{
+                 result:[{id:"暂无数据...",username:"暂无数据...",password:"暂无数据...",date:"暂无数据..."}],
+                 count:0,
+                 pageNo:1,
+                 pagetotal:1,
+                 pagecount:10
+            })
+        }
+    });
+   
 })
 
 //删除读者信息
 router.get('/forbidden',(req,res)=>{
     var id = parseInt(req.query.id);
-    console.log(id)
-    console.log("hujie")
     conn.getDb((err,db)=>{
         if(err) throw err;
         var coll = db.collection('readerinfo');
@@ -175,7 +187,6 @@ router.get('/delete',(req,res)=>{
 //修改数据库
 router.get('/edit',(req,res)=>{
     var result = req.query.id;
-    console.log(result)
     res.render('edit',{result})
 })
 router.post('/modify',(req,res)=>{
@@ -196,22 +207,6 @@ router.post('/modify',(req,res)=>{
         })
 })
 
-var count = function readerCount(){
-    conn.getDb((err,db)=>{
-        if(err) throw err;
-        var readerinfo = db.collection('readerinfo');
-        readerinfo.find().toArray((err,result)=>{
-            if(err) throw err;
-            var readerCount = result.length;
-            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-            console.log(readerCount)
-            db.close();
-            return readerCount;
-        })
-    })
-}();
-
-    
-
-    
 module.exports = router;
+
+

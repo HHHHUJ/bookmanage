@@ -52,13 +52,21 @@
                     <h2>短评......</h2>
                 </div>
                 <ul id="oList">
-                    <li>
-                        <p>抢沙发.....</p>
-                    </li>
+                    <% if(flag){%>
+                        <% text.forEach((item,index)=>{%>
+                            <li>
+                                <p><em><%- item.username%></em>看过<time><%- item.date%></time></p>
+                                <p><%- item.content%></p>
+                            </li>
+                        <% })%>
+                    <% }else{%>
+                        <li>
+                            <p>抢沙发......</p>
+                        </li>
+                    <% }%>
                 </ul>
             </div>
-            <!-- action="/list?id=<%- book.id%>" method="post"  -->
-            <div id="commentForm">
+            <form id="commentForm">
                 <h6>短评...... <i id="closed">×</i></h6>
                 <label for="">
                     <textarea name="content" id="content"></textarea>
@@ -66,7 +74,7 @@
                 <label for="">
                     <button id="announceSubmit" type="button">发表</button>
                 </label>
-            </div>
+            </form>
         </div>
 </body>
 </html>
@@ -87,19 +95,17 @@
         })
         $('#announceSubmit').on('click',function(){
             var getdata = $('#content').val();
-            var oLi = $("#oList").children().first();
-            console.log(oLi)
+            var _html = '';
             $.ajax({
                 url:"/hhh",
                 type:"get",
                 data:{content:getdata},
                 success:function(data){
-                   if(!data){
-                      oLi.css("display","block")
-                   }else{
-                       oLi.css('display','none');
-                       oLi.clone(true).css("display","block").html(data.content).prependTo($('#oList'))
-                   }
+                     _html = `<li>
+                                <p><em>${data.result.username}</em>看过<time>${data.result.date}</time></p>
+                                <p>${data.content}</p>
+                            </li>`;
+                    $('#oList').prepend(_html); 
                 }
             })
         })

@@ -7,23 +7,60 @@
     <script type="text/javascript" src="/bootstrap/js/jquery-1.10.1.js"></script>
     <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
   </head>
-  <body id="body">
+  <body id="indexBody">
     <%- include("header")%>
       <div class="container">
           <form action="users/login" method="post" class="row">
-              <div class="form-group">
+              <div class="form-group col-md-4 col-md-offset-4">
                 <label for="username">用户名</label>
                 <input type="text" name="username" class="form-control" id="username" placeholder="请输入账号">
+                <span class="user_hint"></span>
               </div>
-              <div class="form-group">
+              <div class="form-group col-md-4 col-md-offset-4">
                 <label for="password">密码</label>
                 <input type="password" name="password" class="form-control" id="password" placeholder="请输入密码">
+                <span class="password_hint"></span>
               </div>
-              <button type="submit" class="btn btn-success form-control" style="margin-top:10px;">读者登录</button>
-              <button type="button" class="btn btn-primary form-control" style="margin-top:10px;" onclick="window.location.href='/register'">注册</button>
-              <button type="button" class="btn btn-info form-control" style="margin-top:10px;" onclick="window.location.href='/managerlogin'">管理员登录</button>
+              <div class="form-group col-md-4 col-md-offset-4">
+                <button type="submit" class="btn btn-success form-control" style="margin-top:10px;" id="btn" disabled>读者登录</button>
+              </div>
+              <div class="form-group col-md-4 col-md-offset-4">
+                <button type="button" class="btn btn-primary form-control" style="margin-top:10px;" onclick="window.location.href='/register'">注册</button>
+              </div>
+              <div class="form-group col-md-4 col-md-offset-4">
+                <button type="button" class="btn btn-info form-control" style="margin-top:10px;" onclick="window.location.href='/managerlogin'">管理员登录</button>
+              </div>
           </form>
       </div>
   </body>
 </html>
+<script>
+    $(function(){
+        var user_r = false;
+        var password_r = false;
+        $('#username').blur(function(){
+            if ((/\w{3,15}/).test($('#username').val())){
+                $('.user_hint').html("✔").css("color","green");
+                user_r = true;
+            }else {
+                $('.user_hint').html("×").css("color","red");
+                user_r = false;
+            }
+        });
+        $('#password').blur(function(){
+            if ((/\w{6,20}/).test($('#password').val())){
+                $('.password_hint').html("✔").css("color","green");
+                password_r = true;
+            }else {
+                $('.password_hint').html("×").css("color","red");
+                password_r = false;
+            }
+            if(user_r&&password_r==true){
+                $('#btn').removeAttr("disabled").css("cursor","pointer");
+            }
+        });   
+    })
+</script>
+
+
 

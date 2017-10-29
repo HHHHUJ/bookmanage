@@ -5,32 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
     <script type="text/javascript" src="/bootstrap/js/jquery-1.10.1.js"></script>
     <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="javascripts/jquery.contip.js"></script>
 </head>
-<body>
-    <div class="container">
+<body id="registerBody">
+    <%- include("header")%>
+    <div class="container" id="container">
             <form class="row" action="/users/register" method="post">
-                <div class="form-group">
+                <div class="form-group col-md-4 col-md-offset-4">
                     <label for="username">用户名</label>
-                    <input type="text" name="username" class="form-control" id="exampleInputUsername1" placeholder="请输入账号">
+                    <input type="text" name="username" class="form-control" id="username" placeholder="请输入账号" data-title="3-15位字符，可由中文、英文、数字及“_”、“-”组成">
+                    <span class="user_hint"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-4 col-md-offset-4">
                     <label for="password">密码</label>
-                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="请输入密码">
+                    <input type="password" name="password" class="form-control" id="password" placeholder="请输入密码" data-title="6-20位字符，可由中文、英文、数字及“_”、“-”组成">
+                    <span class="password_hint"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-4 col-md-offset-4">
                         <label for="repassword">确认密码</label>
-                        <input type="password" name="repassword"class="form-control" id="exampleInputPassword1" placeholder="确认密码">
+                        <input type="password" name="repassword"class="form-control" id="repassword" placeholder="确认密码" data-title="请确认和密码一致">
+                        <span class="repassword_hint"></span>
                  </div>
-                <div class="checkbox">
-                    <label>
-                    <input type="checkbox"> 记住密码
-                    </label>
+                <div class="form-group col-md-4 col-md-offset-4">
+                    <button type="submit" class="btn btn-primary form-control" id="btn" disabled>注册</button>
                 </div>
-                <button type="submit" class="btn btn-primary form-control">注册</button>
             </form>
     </div>
 </body>
 </html>
+<script>
+    $(function(){
+        var user_r = false;
+        var password_r = false;
+        var repassword_r = false;
+        $('#username').blur(function(){
+            if ((/\w{3,15}/).test($('#username').val())){
+                $('.user_hint').html("✔").css("color","green");
+                user_r = true;
+            }else {
+                $('.user_hint').html("×").css("color","red");
+                user_r = false;
+            }
+        });
+        $('#password').blur(function(){
+            if ((/\w{6,20}/).test($('#password').val())){
+                $('.password_hint').html("✔").css("color","green");
+                password_r = true;
+            }else {
+                $('.password_hint').html("×").css("color","red");
+                password_r = false;
+            }
+        });
+        $('#repassword').blur(function(){
+            if($('#password').val()==$('#repassword').val()&& $('#repassword').val()!=''){
+                $('.repassword_hint').html("✔").css("color","green");
+                repassword_r = true;
+            }else {
+                $('.repassword_hint').html("×").css("color","red");
+                repassword_r = false;
+            }
+            console.log(user_r,password_r,repassword_r)
+            if(user_r&&password_r&&repassword_r==true){
+                $('#btn').removeAttr("disabled").css("cursor","pointer");
+            }else{
+                $('#btn').attr("disabled","disabled");
+            }   
+        }); 
+        $('#container').on('mouseover','input',function(){
+            console.log($(this))
+            $(this).contip({
+                align: 'top',
+                bg: '#f00',
+                fade: 360,
+                opacity: 0.5,
+                html: $(this).attr("data-title")
+            }).show();    
+        })
+    })
+</script>
+ 

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var conn = require('../utils/conn.js')
+var conn = require('../utils/conn')
 var async = require('async');
 var id = 512017000;
 /* GET users listing. */

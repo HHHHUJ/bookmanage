@@ -1,8 +1,8 @@
+*{margin:0;padding:0;box-sizing: border-box;}
+html,body{height:100%;}
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-*{margin:0;padding:0;box-sizing: border-box;}
 ul li{list-style: none;}
 a {
   color: #00B7FF;
@@ -87,12 +87,19 @@ section{width:100%;}
 #commentForm input{width:75px;height:35px;border:none;outline: none;background:#689C2E;border:2px solid #88D016;border-radius:5px;}
 
 
-.managerTop{height:496px;width:100%;background:url(../images/pen.jpg) no-repeat center center;background-size:1163px 496px;opacity:0.7;}
 .managerTop>button{color:#fff;width:100px;height:50px;display:block;margin:20px 0;border:none;outline: none;background:#39B2DF;border-bottom:4px solid #186484;border-radius:6px;}
 .managerTop>button:hover{background:#01A0E1;}
 
 
 .allInfoBtn>a{display:inline-block;width:80px;height:30px;background:rgb(125, 119, 212);color:#fff;border-radius:6px;line-height:30px;text-align:center;}
+/* 背景大图 */
+#indexBody{overflow:hidden;background:url(../images/indexpen.jpg) no-repeat center center;background-size:100% 100%;}
+#managerBody{background:url(../images/managerpen.jpg) no-repeat center center;background-size:100% 100%;}
+#registerBody{background:url(../images/registerpen.jpg) no-repeat center center;background-size:100% 100%;}
+#managerloginBody{background:url(../images/managerloginpen.jpg) no-repeat center center;background-size:100% 100%;}
 
-#body{background:url(../images/homepen.jpg) no-repeat center center;background-size:cover;}
+
+/* 表单验证 */
+.container div{position:relative;}
+.container span{line-height:30px;font-size:40px;display:inline-block;width:30px;height:30px;position:absolute;top:27px;right:-15px;}
 

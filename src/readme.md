@@ -67,3 +67,7 @@ db.users.find({"address.city":"Los Angeles"})   顺序要一致
             db.products.find( { description: { $regex: /m.*line/, $options: 'si' } } ) 
             4.参数 x ====== 官网的大意是忽视空白字符。
 
+7.req.query得到的是字符串，进行增删改查时要把"123"=====>123(类型转换)
+
+<button></button>一定要带type属性,因为它的默认属性是submit,容易出错
+
